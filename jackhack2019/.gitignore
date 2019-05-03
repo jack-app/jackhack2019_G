@@ -56,4 +56,4 @@ sysinfo.txt
 crashlytics-build.properties
 
 # OpenCV Demo Scene
-/[Aa]ssets/OpenCV+Unity/Demo/*/*.unity
+[Aa]ssets/OpenCV+Unity/Demo/*/*.unity
