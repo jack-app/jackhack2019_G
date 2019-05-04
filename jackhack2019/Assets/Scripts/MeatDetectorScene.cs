@@ -51,7 +51,12 @@ public class MeatDetectorScene : WebCamera
         if (meatlist.Count < tempCount)
         {
             Debug.Log(tempCount + " meat change");
-            //meatCount = tempCount;
+            
+            for(int i = 0; i < meatlist.Count; i++)
+            {
+                DropTracking(i);
+            }
+
             meatlist = new List<DetectedMeat>(processor.Meats);
 
         }
@@ -73,14 +78,22 @@ public class MeatDetectorScene : WebCamera
                 // we have to tracker - let's initialize one
                 if (tracker.Count <= i || tracker[i] == null)
                 {
-                    Debug.Log("add tracker");
                     // but only if we have big enough "area of interest", this one is added to avoid "tracking" some 1x2 pixels areas
                     if (new Vector2(meat.Region.X, meat.Region.Y).magnitude >= minimumAreaDiagonal)
                     {
                         obj = new Rect2d(meat.Region.X, meat.Region.Y, meat.Region.Width, meat.Region.Height);
 
                         // initial tracker with current image and the given rect, one can play with tracker types here
-                        tracker.Add(Tracker.Create(TrackerTypes.KCF));
+                        if (tracker.Count <= i)
+                        {
+                            tracker.Add(Tracker.Create(TrackerTypes.MedianFlow));
+                            Debug.Log("add tracker");
+                        }
+                        else if (tracker[i] == null)
+                        {
+                            Debug.Log("replace tracker");
+                            tracker[i] = Tracker.Create(TrackerTypes.MedianFlow);
+                        }
                         tracker[i].Init(downscaled, obj);
 
                         frameSize.Add(downscaled.Size());
@@ -112,6 +125,7 @@ public class MeatDetectorScene : WebCamera
                 if (null != tracker[i] && obj.Width != 0)
                 {
                     Cv2.Rectangle((InputOutputArray)(image), areaRect * (1.0 / downScale), Scalar.LightGreen, 4);
+                    Cv2.PutText((InputOutputArray)(image), i.ToString("000"), new Point(areaRect.X, areaRect.Y), HersheyFonts.HersheySimplex, 2, Scalar.Yellow, 3);
                 }
             }
         }
@@ -128,8 +142,11 @@ public class MeatDetectorScene : WebCamera
     protected void DropTracking(int i)
     {
         Debug.Log(i + " removed");
-        tracker[i].Dispose();
-        tracker[i] = null;
+        if (tracker[i] != null)
+        {
+            tracker[i].Dispose();
+            tracker[i] = null;
+        }
         meatlist.RemoveAt(i);
     }
 
