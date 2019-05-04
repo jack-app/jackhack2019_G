@@ -1,0 +1,76 @@
+body {
+    background-color: #D8D8D8;
+}
+
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+    min-width: 620px;
+}
+
+.head-wrapper {
+    margin: 10px auto 10px auto;
+}
+
+.progress {
+    height: 30px;
+    margin-bottom: 0px;
+    background-color: #8F8F8F;
+    background-image: -moz-linear-gradient(top, #8F8F8F, #8F8F8F);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#8F8F8F), to(#8F8F8F));
+    background-image: -webkit-linear-gradient(top, #8F8F8F, #8F8F8F);
+    background-image: -o-linear-gradient(top, #8F8F8F, #8F8F8F);
+    background-image: linear-gradient(to bottom, #8F8F8F, #8F8F8F);
+}
+
+.main-wrapper {
+    margin: 60px auto 70px auto;
+}
+
+#cnvs {
+    -webkit-box-shadow: 0px 0px 25px rgba(50, 50, 50, 1);
+    -moz-box-shadow:    0px 0px 25px rgba(50, 50, 50, 1);
+    box-shadow:         0px 0px 25px rgba(50, 50, 50, 1);
+}
+
+.messages {
+    margin-top: 80px;
+}
+
+.message {
+    font-size: 45pt;
+    font-weight: bold;
+    line-height: 35pt;
+    font-family: 'GentiumBasicRegular', Tahoma, Geneva, sans-serif;
+    color: #D66270;
+}
+
+.count {
+    min-width: 200px;
+    text-align: right;
+    font-size: 17pt;
+    line-height: 34px;
+    float: right;
+    color: #E0E0E0;
+    font-family: 'GentiumBasicRegular', Tahoma, Geneva, sans-serif;
+    padding-right: 10px;
+    margin: 8px 0px 8px 10px;
+    background-color: #5C5C5C;
+    -webkit-box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.navbar .btn-group {
+    margin: 10px auto 10px auto;
+}
+
+.navbar-inverse .navbar-inner {
+    background-color: #5E5E5E;
+    background-image: -moz-linear-gradient(top, #707070, #3F3F3F);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#707070), to(#3F3F3F));
+    background-image: -webkit-linear-gradient(top, #707070, #3F3F3F);
+    background-image: -o-linear-gradient(top, #707070, #3F3F3F);
+    background-image: linear-gradient(to bottom, #707070, #3F3F3F);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#707070', endColorstr='#3F3F3F', GradientType=0);
+    border-color: #777777;
+}
