@@ -7,7 +7,7 @@
 	/// <summary>
 	/// Data stabilizer general parameters
 	/// </summary>
-	class DataStabilizerParams
+	public class DataStabilizerParams
     {
         /// <summary>
         /// Should this stabilizer just push data through (false value) or do some work before (true value)?
@@ -54,7 +54,7 @@
     /// Base DataStabilizer generic interface
     /// </summary>
     /// <typeparam name="T">Any data type</typeparam>
-    interface IDataStabilizer<T>
+    public interface IDataStabilizer<T>
     {
         /// <summary>
         /// Parameters, see corresponding class
@@ -75,7 +75,7 @@
     /// <summary>
     /// Basic data stabilizer abstract implementation, intended to be used on compact data sets
     /// </summary>
-    abstract class DataStabilizerBase<T>
+    public abstract class DataStabilizerBase<T>
     {
         protected T result;                     // computer output sample
         protected bool dirty = true;            // flag signals whether "result" sample must be recomputed

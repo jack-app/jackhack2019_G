@@ -7,7 +7,7 @@
 	/// <summary>
 	/// Detected object data
 	/// </summary>
-	class DetectedObject
+	public class DetectedObject
     {
         PointsDataStabilizer marksStabilizer = null;
 
@@ -86,6 +86,24 @@
 
             Marks = marksStabilizer.Sample;
             return marksStabilizer.LastApplied;
+        }
+    }
+
+    public class DetectedMeat : DetectedObject
+    {
+        RectStabilizer meatStabilizer = null;
+
+        public DetectedMeat(DataStabilizerParams stabilizerParameters, Rect roi)
+            : base(stabilizerParameters, "Meat", roi)
+        {
+            meatStabilizer = new RectStabilizer(stabilizerParameters);
+        }
+
+        public void SetRegion(Rect roi)
+        {
+            meatStabilizer.Sample = roi;
+
+            Region = meatStabilizer.Sample;
         }
     }
 
