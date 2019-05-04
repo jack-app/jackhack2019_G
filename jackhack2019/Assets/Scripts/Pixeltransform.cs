@@ -19,7 +19,11 @@ public class Pixeltransform : MonoBehaviour
     {
         
     }
-    //pixel座標をワールド座標に変換します
+    /// <summary>
+    /// pixel座標をワールド座標に変換します
+    /// </summary>
+    /// <param name="rect"></param>
+    /// <returns></returns>
     public static Vector3 Getworldpositionfromrectposition(RectTransform rect)
     {
         //UI座標からスクリーン座標に変換
