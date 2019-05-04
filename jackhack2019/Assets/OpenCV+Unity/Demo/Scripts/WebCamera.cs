@@ -87,6 +87,7 @@ namespace OpenCvSharp.Demo
 
 			// frontal camera - we must flip around Y axis to make it mirror-like
 			parameters.FlipHorizontally = forceFrontalCamera || webCamDevice.Value.isFrontFacing;
+            //parameters.FlipHorizontally = false;
 			
 			// TODO:
 			// actually, code below should work, however, on our devices tests every device except iPad
