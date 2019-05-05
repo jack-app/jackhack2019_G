@@ -1,1 +1,7 @@
 TrainingAssistant/log.dat
+outputone.vec
+net.txt
+PositiveImage/output.vec
+NegativeImage/neglist.txt
+*.vec
+cascade/

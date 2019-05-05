@@ -10,17 +10,19 @@ public class MeatDetectorScene : WebCamera
 {
     public TextAsset meats;
 
-    private MeatProcessorLive<WebCamTexture> processor;
+    public MeatProcessorLive<WebCamTexture> processor;
 
-    const float downScale = 1f;
-    const float minimumAreaDiagonal = 25.0f;
+    public GameObject UIText;
+
+    const float downScale = 0.5f;
+    const float minimumAreaDiagonal = 20.0f;
 
 
-    List<DetectedMeat> meatlist = new List<DetectedMeat>();
+    public List<DetectedMeat> meatlist = new List<DetectedMeat>();
 
     // tracker
-    List<Size> frameSize = new List<Size>();
-    List<Tracker> tracker = new List<Tracker>();
+    public List<Size> frameSize = new List<Size>();
+    public List<Tracker> tracker = new List<Tracker>();
 
     protected override void Awake()
     {
@@ -32,10 +34,10 @@ public class MeatDetectorScene : WebCamera
         // data stabilizer - affects face rects, meat landmarks etc.
         processor.DataStabilizer.Enabled = true;        // enable stabilizer
         processor.DataStabilizer.Threshold = 2.0;       // threshold value in pixels
-        processor.DataStabilizer.SamplesCount = 2;      // how many samples do we need to compute stable data
+        processor.DataStabilizer.SamplesCount = 6;      // how many samples do we need to compute stable data
 
         // performance data - some tricks to make it work faster
-        processor.Performance.Downscale = 256;          // processed image is pre-scaled down to N px by long side
+        processor.Performance.Downscale = 512;          // processed image is pre-scaled down to N px by long side
         processor.Performance.SkipRate = 0;             // we actually process only each Nth frame (and every frame for skipRate = 0)
 
     }
@@ -97,6 +99,11 @@ public class MeatDetectorScene : WebCamera
                         tracker[i].Init(downscaled, obj);
 
                         frameSize.Add(downscaled.Size());
+
+                        var newVec = new Vector2((float)obj.X, -(float)obj.Y) - new Vector2(image.Width / 2.0f, -image.Height / 2.0f);
+
+                        GameObject a = GameObject.Instantiate(UIText, gameObject.transform.parent);
+                        a.transform.localPosition = (newVec + new Vector2((float)obj.Width / 2.0f, 0)) * gameObject.transform.localScale.x;
                     }
                 }
 
@@ -125,7 +132,8 @@ public class MeatDetectorScene : WebCamera
                 if (null != tracker[i] && obj.Width != 0)
                 {
                     Cv2.Rectangle((InputOutputArray)(image), areaRect * (1.0 / downScale), Scalar.LightGreen, 4);
-                    Cv2.PutText((InputOutputArray)(image), i.ToString("000"), new Point(areaRect.X, areaRect.Y), HersheyFonts.HersheySimplex, 2, Scalar.Yellow, 3);
+                    
+                    //Cv2.PutText((InputOutputArray)(image), i.ToString("000"), new Point(areaRect.X, areaRect.Y), HersheyFonts.HersheySimplex, 2, Scalar.Yellow, 3);
                 }
             }
         }

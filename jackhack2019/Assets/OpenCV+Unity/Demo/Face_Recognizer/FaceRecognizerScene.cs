@@ -5,16 +5,20 @@
 	using System.Collections.Generic;
 	using OpenCvSharp;
 	using OpenCvSharp.Face;
+    using UnityEngine.UI;
+    using UnityEngine;
 
 	public class FaceRecognizerScene : UnityEngine.MonoBehaviour
 	{
 		public UnityEngine.Texture2D sample;
 		public UnityEngine.TextAsset faces;
-		public UnityEngine.TextAsset recognizerXml;
+
+        public RectTransform imageObject;
+		//public UnityEngine.TextAsset recognizerXml;
 
 		private CascadeClassifier cascadeFaces;
-		private FaceRecognizer recognizer;
-		private string[] names;
+		//private FaceRecognizer recognizer;
+		//private string[] names;
 
 		private readonly Size requiredSize = new Size(128, 128);
 
@@ -89,15 +93,15 @@
 			// method defined above to instructions and sample code regarding training your own recognizer from the scratch
 			//recognizer = FaceRecognizer.CreateLBPHFaceRecognizer();
 			//recognizer = FaceRecognizer.CreateEigenFaceRecognizer();
-			recognizer = FaceRecognizer.CreateFisherFaceRecognizer();
+			//recognizer = FaceRecognizer.CreateFisherFaceRecognizer();
 
 			// This pre-trained set was quite tiny and contained only those 5 persons that are detected and recognized on the image. We took 5 photos for each person from
 			// public images on Google, for a real-world application you will need much more sample data for each persona, for more info refer to the OpenCV documentation
 			// (there are some links in the "TrainRecognizer" sample function
-			recognizer.Load(new FileStorage(recognizerXml.text, FileStorage.Mode.Read | FileStorage.Mode.Memory));
+			//recognizer.Load(new FileStorage(recognizerXml.text, FileStorage.Mode.Read | FileStorage.Mode.Memory));
 
 			// label names
-			names = new string[] { "Cooper", "DeGeneres", "Nyongo", "Pitt", "Roberts", "Spacey"	};
+			//names = new string[] { "Cooper", "DeGeneres", "Nyongo", "Pitt", "Roberts", "Spacey"	};
 		}
 
 		/// <summary>
@@ -113,7 +117,7 @@
 			Cv2.EqualizeHist(gray, gray);
 
 			// detect matching regions (faces bounding)
-			Rect[] rawFaces = cascadeFaces.DetectMultiScale(gray, 1.1, 6);
+			OpenCvSharp.Rect[] rawFaces = cascadeFaces.DetectMultiScale(gray, 1.1, 6);
 
 			// now per each detected face draw a marker and detect eyes inside the face rect
 			foreach (var faceRect in rawFaces)
@@ -128,15 +132,15 @@
 				// positive match with LBPH algo and more like 700-1200 for positive match with EigenFaces/FisherFaces. Unfortunately,
 				// all that data isn't much helpful for real life as you don't get adequate % of the confidence, the only thing you
 				// actually know is "less is better" with 0 being some "ideal match"
-				int label = -1;
-				double confidence = 0.0;
-				recognizer.Predict(grayFace, out label, out confidence);
+				//int label = -1;
+				//double confidence = 0.0;
+				//recognizer.Predict(grayFace, out label, out confidence);
 
-				bool found = confidence < 1200;
-				Scalar frameColor = found ? Scalar.LightGreen : Scalar.Red;
-				Cv2.Rectangle((InputOutputArray)image, faceRect, frameColor, 2);
+				//bool found = confidence < 1200;
+				//Scalar frameColor = found ? Scalar.LightGreen : Scalar.Red;
+				Cv2.Rectangle((InputOutputArray)image, faceRect, Scalar.Red, 2);
 
-				int line = 0;
+                /*int line = 0;
 				const int textPadding = 2;
 				const double textScale = 2.0;
 				string messge = String.Format("{0}", names[label], (int)confidence);
@@ -149,7 +153,19 @@
 				);
 
 				Cv2.Rectangle((InputOutputArray)image, textBox, frameColor, -1);
-				image.PutText(messge, textBox.TopLeft + new Point(textPadding, textPadding + textSize.Height), HersheyFonts.HersheyPlain, textScale, Scalar.Black, 2);
+				image.PutText(messge, textBox.TopLeft + new Point(textPadding, textPadding + textSize.Height), HersheyFonts.HersheyPlain, textScale, Scalar.Black, 2);*/
+
+                var Vec = RectTransformUtility.WorldToScreenPoint(Camera.main, gameObject.transform.localPosition);
+
+                //Debug.Log(Vec);
+                Debug.Log(faceRect);
+
+                var newVec = new Vector2(faceRect.X, -faceRect.Y) - new Vector2(image.Width / 2.0f, -image.Height / 2.0f);
+                Debug.Log(newVec);
+                //Debug.Log(newVec + new Vector2(faceRect.X / 2.0f, 0));
+
+                var a = Instantiate(imageObject, gameObject.transform.parent);
+                a.transform.localPosition = newVec + new Vector2(faceRect.Width / 2.0f, 0);
 			}
 
 			// Render texture
@@ -163,6 +179,11 @@
 
 		// Update is called once per frame
 		void Update()
-		{}
+		{
+            /*Debug.Log(imageObject.localPosition);
+            Debug.Log(imageObject.position);
+            Debug.Log(RectTransformUtility.WorldToScreenPoint(Camera.main, imageObject.localPosition));
+            Debug.Log(RectTransformUtility.WorldToScreenPoint(Camera.main, imageObject.position));*/
+        }
 	}
 }
