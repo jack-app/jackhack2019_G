@@ -14,7 +14,7 @@ public class MeatDetectorScene : WebCamera
 
     //public GameObject UIText;
 
-    const float downScale = 0.33f;
+    const float downScale = 1f;
     const float minimumAreaDiagonal = 10.0f;
 
 

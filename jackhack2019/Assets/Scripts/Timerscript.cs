@@ -17,22 +17,33 @@ public class Timerscript : MonoBehaviour
     {
         while (time > 0)
         {
-            yield return new WaitForSeconds(1f);
             time -= 1;
             int minute = time / 60;//残り時間(分)
-            if (minute >= 0)
+            if (minute > 0)
             {
-                InstantiateText.Text.GetComponent<Text>().text = "残り" + minute + "分";
+                if(GetComponent<Text>().text != null)
+                {
+                    int tmptime = time - minute * 60;
+                    GetComponent<Text>().text = "残り" + minute + "分" + tmptime + "秒";
+                }
+                
             }
             else
             {
-                InstantiateText.Text.GetComponent<Text>().text = "残り" + time + "秒";
+                if (GetComponent<Text>().text != null)
+                {
+                    GetComponent<Text>().text = "残り" + time + "秒";
+                }
+                
             }
+            yield return new WaitForSeconds(1f);
 
         }
         if(time <= 0)
         {
             Debug.Log("上手に焼けました!");
         }
+
+
     }
 }
