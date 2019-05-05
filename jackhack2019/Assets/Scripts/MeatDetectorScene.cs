@@ -65,7 +65,7 @@ public class MeatDetectorScene : WebCamera
 
         }
 
-        Debug.Log("meat count : " + meatlist.Count);
+        //Debug.Log("meat count : " + meatlist.Count);
 
         // If not dragged - show the tracking data
         if (meatlist.Count > 0)
@@ -87,16 +87,18 @@ public class MeatDetectorScene : WebCamera
                         if (tracker.Count <= i)
                         {
                             tracker.Add(Tracker.Create(TrackerTypes.MedianFlow));
+                            meatText.Add(InstantiateText.Instxt(gameObject.GetComponent<RectTransform>(), meat.Region));
                             Debug.Log("add tracker");
                         }
                         else if (tracker[i] == null)
                         {
                             Debug.Log("replace tracker");
                             tracker[i] = Tracker.Create(TrackerTypes.MedianFlow);
+                            meatText[i] = InstantiateText.Instxt(gameObject.GetComponent<RectTransform>(), meat.Region);
                         }
                         tracker[i].Init(downscaled, obj);
 
-                        GameObject text = InstantiateText.Instxt(gameObject.GetComponent<RectTransform>(), meat.Region);
+                        //GameObject text = InstantiateText.Instxt(gameObject.GetComponent<RectTransform>(), meat.Region);
 
                         //frameSize.Add(downscaled.Size());
 
@@ -121,10 +123,6 @@ public class MeatDetectorScene : WebCamera
                         obj = Rect2d.Empty;
 
                         DropTracking(i);
-                    }
-                    else
-                    {
-                        
                     }
                 }
 
@@ -160,6 +158,8 @@ public class MeatDetectorScene : WebCamera
         {
             tracker[i].Dispose();
             tracker[i] = null;
+            Destroy(meatText[i]);
+            meatText[i] = null;
         }
         meatlist.RemoveAt(i);
     }
