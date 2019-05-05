@@ -190,7 +190,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: meat
+  m_Text: 
 --- !u!222 &778479045
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -445,6 +445,7 @@ MonoBehaviour:
   Surface: {fileID: 1389337812}
   meats: {fileID: 4900000, guid: ab9cdfdbe27dbc84da548d69c12ed646, type: 3}
   UIText: {fileID: 778479042}
+  frameSize: []
 --- !u!114 &1389337815
 MonoBehaviour:
   m_ObjectHideFlags: 0

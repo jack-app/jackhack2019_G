@@ -12,16 +12,16 @@ public class MeatDetectorScene : WebCamera
 
     public MeatProcessorLive<WebCamTexture> processor;
 
-    public GameObject UIText;
+    //public GameObject UIText;
 
-    const float downScale = 0.5f;
-    const float minimumAreaDiagonal = 20.0f;
+    const float downScale = 0.33f;
+    const float minimumAreaDiagonal = 10.0f;
 
 
     public List<DetectedMeat> meatlist = new List<DetectedMeat>();
 
     // tracker
-    public List<Size> frameSize = new List<Size>();
+    //public List<Size> frameSize = new List<Size>();
     public List<Tracker> tracker = new List<Tracker>();
 
     protected override void Awake()
@@ -48,6 +48,7 @@ public class MeatDetectorScene : WebCamera
         Mat image = OpenCvSharp.Unity.TextureToMat(input, TextureParameters);
         Mat downscaled = image.Resize(Size.Zero, downScale, downScale);
         Rect2d obj = Rect2d.Empty;
+        var areaRect = new OpenCvSharp.Rect();
 
         int tempCount = processor.ProcessTexture(input, TextureParameters);
         if (meatlist.Count < tempCount)
@@ -63,9 +64,6 @@ public class MeatDetectorScene : WebCamera
 
         }
 
-
-        var areaRect = new OpenCvSharp.Rect();
-
         Debug.Log("meat count : " + meatlist.Count);
 
         // If not dragged - show the tracking data
@@ -74,7 +72,6 @@ public class MeatDetectorScene : WebCamera
 
             for(int i = 0; i < meatlist.Count; i++)
             {
-                //Debug.LogFormat("meatCount : {0}, meatlist.Count : {1}, i : {2}", meatCount, meatlist.Count, i);
                 DetectedMeat meat = meatlist[meatlist.Count - i - 1];
 
                 // we have to tracker - let's initialize one
@@ -83,7 +80,7 @@ public class MeatDetectorScene : WebCamera
                     // but only if we have big enough "area of interest", this one is added to avoid "tracking" some 1x2 pixels areas
                     if (new Vector2(meat.Region.X, meat.Region.Y).magnitude >= minimumAreaDiagonal)
                     {
-                        obj = new Rect2d(meat.Region.X, meat.Region.Y, meat.Region.Width, meat.Region.Height);
+                        obj = new Rect2d(meat.Region.X * downScale, meat.Region.Y * downScale, meat.Region.Width * downScale, meat.Region.Height * downScale);
 
                         // initial tracker with current image and the given rect, one can play with tracker types here
                         if (tracker.Count <= i)
@@ -98,12 +95,12 @@ public class MeatDetectorScene : WebCamera
                         }
                         tracker[i].Init(downscaled, obj);
 
-                        frameSize.Add(downscaled.Size());
+                        //frameSize.Add(downscaled.Size());
 
-                        var newVec = new Vector2((float)obj.X, -(float)obj.Y) - new Vector2(image.Width / 2.0f, -image.Height / 2.0f);
+                        //var newVec = new Vector2((float)obj.X, -(float)obj.Y) - new Vector2(image.Width / 2.0f, -image.Height / 2.0f);
 
-                        GameObject a = GameObject.Instantiate(UIText, gameObject.transform.parent);
-                        a.transform.localPosition = (newVec + new Vector2((float)obj.Width / 2.0f, 0)) * gameObject.transform.localScale.x;
+                        //GameObject a = GameObject.Instantiate(UIText, gameObject.transform.parent);
+                        //a.transform.localPosition = (newVec + new Vector2((float)obj.Width / 2.0f, 0)) * gameObject.transform.localScale.x;
                     }
                 }
 
@@ -111,8 +108,8 @@ public class MeatDetectorScene : WebCamera
                 else
                 {
                     // drop tracker if the frame's size has changed, this one is necessary as tracker doesn't hold it well
-                    if (frameSize.Count > i && frameSize[i].Height != 0 && frameSize[i].Width != 0 && downscaled.Size() != frameSize[i])
-                        DropTracking(i);
+                    //if (frameSize.Count > i && frameSize[i].Height != 0 && frameSize[i].Width != 0)
+                        //DropTracking(i);
 
                     if (!tracker[i].Update(downscaled, ref obj))
                     {
@@ -139,7 +136,7 @@ public class MeatDetectorScene : WebCamera
         }
 
         // mark detected objects
-        processor.MarkDetected(image);
+        //processor.MarkDetected(image);
 
         // processor.Image now holds data we'd like to visualize
         output = OpenCvSharp.Unity.MatToTexture(image, output);   // if output is valid texture it's buffer will be re-used, otherwise it will be re-created
