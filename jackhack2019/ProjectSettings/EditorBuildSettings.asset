@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: a805ab81a2f5e654b8d86c64a3324cb1
+  - enabled: 1
+    path: Assets/Scenes/MeatDetectorScene.unity
+    guid: f83d3530bc2ce3b4b986bf57f997071b
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
