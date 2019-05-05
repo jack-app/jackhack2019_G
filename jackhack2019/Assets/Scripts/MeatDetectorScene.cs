@@ -19,6 +19,7 @@ public class MeatDetectorScene : WebCamera
 
 
     public List<DetectedMeat> meatlist = new List<DetectedMeat>();
+    public List<GameObject> meatText = new List<GameObject>();
 
     // tracker
     //public List<Size> frameSize = new List<Size>();
@@ -95,6 +96,8 @@ public class MeatDetectorScene : WebCamera
                         }
                         tracker[i].Init(downscaled, obj);
 
+                        GameObject text = InstantiateText.Instxt(gameObject.GetComponent<RectTransform>(), meat.Region);
+
                         //frameSize.Add(downscaled.Size());
 
                         //var newVec = new Vector2((float)obj.X, -(float)obj.Y) - new Vector2(image.Width / 2.0f, -image.Height / 2.0f);
@@ -119,6 +122,10 @@ public class MeatDetectorScene : WebCamera
 
                         DropTracking(i);
                     }
+                    else
+                    {
+                        
+                    }
                 }
 
                 // save tracked object location
@@ -129,6 +136,8 @@ public class MeatDetectorScene : WebCamera
                 if (null != tracker[i] && obj.Width != 0)
                 {
                     Cv2.Rectangle((InputOutputArray)(image), areaRect * (1.0 / downScale), Scalar.LightGreen, 4);
+
+                    TransformText.Trnstxt(gameObject.GetComponent<RectTransform>(), areaRect);
                     
                     //Cv2.PutText((InputOutputArray)(image), i.ToString("000"), new Point(areaRect.X, areaRect.Y), HersheyFonts.HersheySimplex, 2, Scalar.Yellow, 3);
                 }
