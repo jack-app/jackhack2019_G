@@ -135,7 +135,7 @@ public class MeatDetectorScene : WebCamera
                 {
                     Cv2.Rectangle((InputOutputArray)(image), areaRect * (1.0 / downScale), Scalar.LightGreen, 4);
 
-                    TransformText.Trnstxt(gameObject.GetComponent<RectTransform>(), areaRect);
+                    TransformText.Trnstxt(meatText[i],gameObject.GetComponent<RectTransform>(), areaRect);
                     
                     //Cv2.PutText((InputOutputArray)(image), i.ToString("000"), new Point(areaRect.X, areaRect.Y), HersheyFonts.HersheySimplex, 2, Scalar.Yellow, 3);
                 }
