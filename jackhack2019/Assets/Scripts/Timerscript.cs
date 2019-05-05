@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Timerscript : MonoBehaviour
 {
     static Text Timertext;//残り焼き時間表示
-    public static int time;//残り焼き時間
+    public int time;//残り焼き時間
     // Start is called before the first frame update
     void Start()
     {
